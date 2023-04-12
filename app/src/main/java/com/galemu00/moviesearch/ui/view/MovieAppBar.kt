@@ -20,10 +20,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
-import com.galemu00.moviesearch.ui.theme.topAppBarContentColor
 import com.galemu00.moviesearch.R
 import com.galemu00.moviesearch.ui.theme.TOP_APP_BAR_HEIGHT
 import com.galemu00.moviesearch.ui.theme.topAppBarBackgroundColor
+import com.galemu00.moviesearch.ui.theme.topAppBarContentColor
 import com.galemu00.moviesearch.ui.viewModels.MoviesViewModel
 
 
@@ -51,12 +51,13 @@ fun MoviesAppBar(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DefaultMoviesAppBar(
     onSearchClicked: () -> Unit
 ) {
 
-    SmallTopAppBar(
+    TopAppBar(
         modifier = Modifier.background(color = topAppBarBackgroundColor),
         title = {
             Text(
@@ -71,6 +72,7 @@ fun DefaultMoviesAppBar(
         )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchMoviesAppBar(
     text: String,
