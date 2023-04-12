@@ -1,4 +1,4 @@
-package com.galemu00.moviesearch
+package com.galemu00.moviesearch.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

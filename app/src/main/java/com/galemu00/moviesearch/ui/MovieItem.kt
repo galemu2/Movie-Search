@@ -25,20 +25,25 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.galemu00.moviesearch.R
+import com.galemu00.moviesearch.ui.theme.movieDescriptionTextColor
+import com.galemu00.moviesearch.ui.theme.movieTitleTextColor
 
 /*@Preview(
     showBackground = false,
     name = "Night Mode",
     uiMode = Configuration.UI_MODE_NIGHT_YES
-)*/
+)
 @Preview(
     showBackground = true,
     name = "Day Mode",
     uiMode = Configuration.UI_MODE_NIGHT_NO
-)
+)*/
 @Composable
-fun MovieItem(title:String= stringResource(id = R.string.lorem_ipsum_title), description:String = stringResource(id = R.string
-    .lorem_ipsum_description)) {
+fun MovieItem(
+    moviePoster: String = "",
+    title: String = stringResource(id = R.string.lorem_ipsum_title),
+    description: String = stringResource(id = R.string.lorem_ipsum_description)
+) {
 
     Row(
         modifier = Modifier
@@ -46,7 +51,7 @@ fun MovieItem(title:String= stringResource(id = R.string.lorem_ipsum_title), des
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        MoviePoster()
+        MoviePoster(moviePoster = moviePoster)
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -55,20 +60,22 @@ fun MovieItem(title:String= stringResource(id = R.string.lorem_ipsum_title), des
                 modifier = Modifier
                     .weight(1f)
                     .padding(12.dp)
-                    .fillMaxSize()
-                ,
+                    .fillMaxSize(),
+                color = movieTitleTextColor,
                 text = title,
                 textAlign = TextAlign.Center,
                 maxLines = 1,
                 fontSize = 24.sp,
                 overflow = TextOverflow.Ellipsis,
 
-            )
+
+                )
             Text(
                 modifier = Modifier
                     .weight(1.5f)
                     .fillMaxSize()
                     .padding(4.dp),
+                color = movieDescriptionTextColor,
                 text = description,
                 textAlign = TextAlign.Start,
                 maxLines = 3,
@@ -82,7 +89,7 @@ fun MovieItem(title:String= stringResource(id = R.string.lorem_ipsum_title), des
 
 
 @Composable
-fun MoviePoster(modifier: Modifier = Modifier, moviePoster: String = "") {
+fun MoviePoster(modifier: Modifier = Modifier, moviePoster: String) {
     val context = LocalContext.current
 
     val placeHolder: Painter = painterResource(id = R.drawable.ic_delorean)
