@@ -4,6 +4,7 @@ import com.galemu00.moviesearch.BuildConfig
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
+import com.galemu00.moviesearch.data.model.Result as ResultMovies
 
 interface MoviesApi {
 
@@ -18,7 +19,7 @@ interface MoviesApi {
     suspend fun searchMovies(
         @Query("query")
         query: String
-    ): Response<List<com.galemu00.moviesearch.data.model.Result>>
+    ): Response<List<ResultMovies>>
 
     // load associated image
 }
