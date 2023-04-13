@@ -26,7 +26,6 @@ class MoviesViewModel @Inject constructor(private val repository: MoviesReposito
         get() = _searchedMovies
 
     fun searchMovies(query: String) {
-        Log.d("TAGGGG", "searchMovies: searching")
         viewModelScope.launch(Dispatchers.Main) {
             _searchedMovies.value = Resource.Loading()
             try {
@@ -43,6 +42,7 @@ class MoviesViewModel @Inject constructor(private val repository: MoviesReposito
     private fun handelMoviesSearch(result: Response<Movies>): Resource<Movies> {
         if (result.isSuccessful) {
             result.body()?.let { results ->
+                // TODO delete
                 Log.d(
                     "TAGGGG", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> handelMoviesSearch: ${
                         results

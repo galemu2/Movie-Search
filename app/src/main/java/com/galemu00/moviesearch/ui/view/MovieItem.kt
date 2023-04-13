@@ -3,6 +3,8 @@ package com.galemu00.moviesearch.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,35 +19,49 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.galemu00.moviesearch.R
+import com.galemu00.moviesearch.data.MoviesApi.Companion.POSTER_URL
+import com.galemu00.moviesearch.data.model.Movies
 import com.galemu00.moviesearch.ui.theme.movieDescriptionTextColor
+import com.galemu00.moviesearch.ui.theme.movieItemBoradBackgound
 import com.galemu00.moviesearch.ui.theme.movieTitleTextColor
 
-/*@Preview(
-    showBackground = false,
-    name = "Night Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_YES
-)
-@Preview(
-    showBackground = true,
-    name = "Day Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_NO
-)*/
+@Composable
+fun MoviesList(movies: Movies?) {
+
+    LazyColumn {
+        items(movies!!.results) { movie ->
+            MovieItem(
+                moviePoster = "$POSTER_URL${movie.poster_path}",
+                title = movie.title,
+                description = movie.overview
+            )
+        }
+    }
+
+}
+
 @Composable
 fun MovieItem(
-    moviePoster: String = "",
+    moviePoster: String? = "",
     title: String = stringResource(id = R.string.lorem_ipsum_title),
     description: String = stringResource(id = R.string.lorem_ipsum_description)
 ) {
 
     Row(
         modifier = Modifier
-            .height(120.dp)
-            .fillMaxWidth(),
+            .height(200.dp)
+            .fillMaxWidth()
+            .padding(2.dp)
+            .background(
+                shape = RoundedCornerShape(2.dp),
+                color = movieItemBoradBackgound
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         MoviePoster(moviePoster = moviePoster)
@@ -55,41 +71,41 @@ fun MovieItem(
         ) {
             Text(
                 modifier = Modifier
-                    .weight(1f)
-                    .padding(12.dp)
-                    .fillMaxSize(),
+                    .padding(8.dp)
+                    .fillMaxSize()
+                    .weight(1f),
                 color = movieTitleTextColor,
                 text = title,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Start,
                 maxLines = 1,
-                fontSize = 24.sp,
+                fontSize = 20.sp,
                 overflow = TextOverflow.Ellipsis,
 
-
                 )
+
             Text(
                 modifier = Modifier
-                    .weight(1.5f)
                     .fillMaxSize()
-                    .padding(4.dp),
+                    .padding(4.dp)
+                    .weight(2f),
                 color = movieDescriptionTextColor,
                 text = description,
                 textAlign = TextAlign.Start,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
-                fontSize = 14.sp
+                fontSize = 16.sp
             )
         }
     }
 
 }
 
-
+@Preview
 @Composable
-fun MoviePoster(modifier: Modifier = Modifier, moviePoster: String) {
+fun MoviePoster(modifier: Modifier = Modifier, moviePoster: String?=null) {
     val context = LocalContext.current
 
-    val placeHolder: Painter = painterResource(id = R.drawable.ic_delorean)
+    val placeHolder: Painter = painterResource(id = R.drawable.ic_baseline_movie)
     val description = stringResource(id = R.string.movie_poster)
     val model = ImageRequest
         .Builder(context)
@@ -102,7 +118,7 @@ fun MoviePoster(modifier: Modifier = Modifier, moviePoster: String) {
         modifier = modifier
             .width(100.dp)
             .fillMaxHeight()
-            .background(color = Color.Red)
+            .background(color = Color.Transparent)
             .clip(
                 RoundedCornerShape(2.dp)
             )
