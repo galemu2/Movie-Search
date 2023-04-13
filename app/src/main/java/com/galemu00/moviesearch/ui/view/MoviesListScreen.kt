@@ -1,33 +1,36 @@
 package com.galemu00.moviesearch.ui.view
 
 import android.annotation.SuppressLint
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import com.galemu00.moviesearch.ui.MoviesAppBar
 import com.galemu00.moviesearch.ui.viewModels.MoviesViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MoviesListScreen(viewModel: MoviesViewModel) {
 
-    val moviesResult by viewModel.movieSearchResult
-    LaunchedEffect(key1 = true, block = {
+    var searchBarState by remember { viewModel.searchAppBarOpenState }
 
+    LaunchedEffect(key1 = viewModel.searchAppBarOpenState, block = {
+        searchBarState = viewModel.searchAppBarOpenState.value
+    })
+
+    var result by remember { viewModel.movieSearchResult }
+    LaunchedEffect(key1 = viewModel.movieSearchResult, block = {
+        result = viewModel.movieSearchResult.value
     })
 
     Scaffold(
         modifier = Modifier,
         topBar = {
             MoviesAppBar(
-                searchActionBarOpened = false,
+                searchActionBarOpened = searchBarState,
                 viewModel = viewModel
             )
 
         },
-    ) {}
+    ) {
+        MoviesResult(result)
+    }
 }

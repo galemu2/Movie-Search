@@ -19,18 +19,14 @@ class MoviesViewModel @Inject constructor(private val repository: MoviesReposito
 
     // searchAction bar status
     val searchAppBarOpenState: MutableState<Boolean> = mutableStateOf(false)
-    // val searchText: MutableState<String> = mutableStateOf("")
+    val searchText: MutableState<String> = mutableStateOf("")
 
     private val _searchedMovies = mutableStateOf<Resource<Movies>>(Resource.Idle())
     val movieSearchResult: MutableState<Resource<Movies>>
         get() = _searchedMovies
 
-    init {
-        searchMovies("Star Wars")
-    }
-
     fun searchMovies(query: String) {
-
+        Log.d("TAGGGG", "searchMovies: searching")
         viewModelScope.launch(Dispatchers.Main) {
             _searchedMovies.value = Resource.Loading()
             try {

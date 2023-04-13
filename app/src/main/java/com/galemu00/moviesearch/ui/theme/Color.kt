@@ -23,8 +23,12 @@ val movieDescriptionTextColor: Color
 
 val topAppBarContentColor: Color
     @Composable
-    get() = if (isSystemInDarkTheme()) Color.White else Color.LightGray
+    get() = if (isSystemInDarkTheme()) Color.White else Color.Black
 
 val topAppBarBackgroundColor: Color
     @Composable
-    get() = if (isSystemInDarkTheme()) Color.Black else PurpleGrey40
+    get() = if (isSystemInDarkTheme()) Color.Black else Color.DarkGray
+
+val emptyBackGroundColor: Color
+    @Composable
+    get() = if (isSystemInDarkTheme()) Color.Black else Color.White

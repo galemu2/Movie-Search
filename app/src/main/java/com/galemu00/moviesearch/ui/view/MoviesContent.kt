@@ -1,30 +1,36 @@
 package com.galemu00.moviesearch.ui.view
 
-import android.widget.Toast
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import com.galemu00.moviesearch.Util.Resource
 import com.galemu00.moviesearch.data.model.Movies
 
 @Composable
 fun MoviesResult(
-    moviesList: List<Movies>
+    result: Resource<Movies>
 ) {
-/*
-    var movies = remember {
-        mutableListOf<List<ResultMovies>>()
-    }
-    LaunchedEffect(key1 = moviesList, block = {
-        movies = mutableListOf(moviesList)
-    })*/
 
-    if (moviesList.isEmpty()) {
-        // TODO show empty screen
-    } else {
 
-        Toast.makeText(LocalContext.current, "Total Movies: ${moviesList.size}", Toast.LENGTH_SHORT)
-            .show()
-//        moviesList.forEach { movieItem ->
-//
-//        }
+    when (result) {
+        is Resource.Idle -> {
+            IdleContent()
+        }
+        is Resource.Loading -> {
+            LoadingContent()
+        }
+        is Resource.Success -> {
+            if (result.data?.results?.isEmpty() == true) {
+                EmptyMovieList()
+            } else {
+                // TODO show movies
+            }
+        }
+        is Resource.Error -> {
+            ErrorContent()
+        }
+        else -> {
+            ErrorContent()
+        }
     }
+
+
 }

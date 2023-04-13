@@ -1,6 +1,7 @@
-package com.galemu00.moviesearch.ui
+package com.galemu00.moviesearch.ui.view
 
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -11,7 +12,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
@@ -21,6 +23,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import com.galemu00.moviesearch.R
+import com.galemu00.moviesearch.Util.Resource
 import com.galemu00.moviesearch.ui.theme.TOP_APP_BAR_HEIGHT
 import com.galemu00.moviesearch.ui.theme.topAppBarBackgroundColor
 import com.galemu00.moviesearch.ui.theme.topAppBarContentColor
@@ -33,15 +36,24 @@ fun MoviesAppBar(
     viewModel: MoviesViewModel
 ) {
 
+    var searchText by remember { viewModel.searchText }
+
+    LaunchedEffect(key1 = viewModel.searchText.value, block = {
+        searchText = viewModel.searchText.value
+    })
     if (searchActionBarOpened) {
         SearchMoviesAppBar(
-            text = "",
-            onTextChanged = {},
+            text = searchText,
+            onTextChanged = {
+                viewModel.searchText.value = it
+            },
             onCloseClicked = {
                 viewModel.searchAppBarOpenState.value = false
+                viewModel.searchText.value = ""
+                viewModel.movieSearchResult.value = Resource.Idle()
             },
             onSearchClicked = {
-
+                viewModel.searchMovies(it)
             }
         )
     } else {
@@ -72,7 +84,6 @@ fun DefaultMoviesAppBar(
         )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchMoviesAppBar(
     text: String,
@@ -81,7 +92,6 @@ fun SearchMoviesAppBar(
     onSearchClicked: (String) -> Unit
 ) {
 
-    val context = LocalContext.current
 
     Surface(
         modifier = Modifier
@@ -98,7 +108,7 @@ fun SearchMoviesAppBar(
                 Text(
                     modifier = Modifier.alpha(ContentAlpha.medium),
                     text = stringResource(id = R.string.search_movies),
-                    color = Color.White
+                    color = topAppBarContentColor
                 )
             },
             textStyle = TextStyle(
@@ -140,7 +150,7 @@ fun SearchMoviesAppBar(
                 },
 
                 ),
-            colors = TextFieldDefaults.textFieldColors(
+            colors = TextFieldDefaults.colors(
                 cursorColor = topAppBarContentColor,
                 focusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent,

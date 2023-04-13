@@ -11,12 +11,12 @@ import com.galemu00.moviesearch.R
 import com.galemu00.moviesearch.ui.theme.emptyBackGroundColor
 
 @Composable
-fun ErrorContent() {
+fun IdleContent() {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = emptyBackGroundColor
     ) {
-        val imageDayMode = painterResource(id = R.drawable.ic_baseline_error)
+        val imageDayMode = painterResource(id = R.drawable.ic_baseline_search)
 
         Image(
             painter = imageDayMode,
